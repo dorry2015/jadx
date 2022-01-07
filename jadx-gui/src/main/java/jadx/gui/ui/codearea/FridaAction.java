@@ -33,6 +33,47 @@ public final class FridaAction extends JNodeMenuAction<JNode> {
 		});
 	}
 
+	private static String convertType(String type){
+        if (!type.endsWith("[]")) {
+            return type;
+        }
+        String typeResult = "";
+        while (type.endsWith("[]")) {
+            typeResult += "[";
+            type = type.substring(0, type.length()-2);
+        }
+        switch (type){
+            case "int":
+                typeResult += "I";
+                break;
+            case "boolean":
+                typeResult += "Z";
+                break;
+            case "byte":
+                typeResult += "B";
+                break;
+            case "char":
+                typeResult += "C";
+                break;
+            case "double":
+                typeResult += "D";
+                break;
+            case "float":
+                typeResult += "F";
+                break;
+            case "long":
+                typeResult += "J";
+                break;
+            case "short":
+                typeResult += "S";
+                break;
+            default:
+                typeResult += "L"+type + ";";
+                break;
+        }
+        return typeResult;
+    }
+	
 	private void doFrida() {
 		if (node != null) {
 			if (node.getClass().getName().equals(JMethod.class.getName())) {
@@ -46,7 +87,7 @@ public final class FridaAction extends JNodeMenuAction<JNode> {
 				String params = "";
 				for (int i = 0; i < argTypes.size(); i++) {
 					ArgType arg = argTypes.get(i);
-					arguments = arguments +"'" + arg.toString() + "', ";
+					arguments = arguments +"'" + convertType(arg.toString()) + "', ";
 					params = params +"v"+i + ", ";
 				}
 				if(arguments.length() > 0) {
@@ -83,7 +124,7 @@ public final class FridaAction extends JNodeMenuAction<JNode> {
 				sb.append("(");
 				sb.append(params);
 				sb.append(");\n    printMethod(invokeId, false, false, arguments, ret ,'");
-				sb.append(methodInfo.getRawFullId());
+				sb.append(methodInfo.toString());
 				sb.append("');\n");
 				if(methodInfo.isConstructor() == false && methodInfo.getReturnType().isVoid() == false) {
 					sb.append("    return ret;\n");
