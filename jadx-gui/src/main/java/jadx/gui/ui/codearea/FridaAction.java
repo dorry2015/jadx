@@ -61,6 +61,7 @@ public final class FridaAction extends JNodeMenuAction<JNode> {
 				String classNameVar = className.replace("$","_");
 				classNameVar = classNameVar.replace("-","_");
 				classNameVar = classNameVar.replace(".","_");
+				classNameVar += "_cls";
 				sb.append("var ");
 				sb.append(classNameVar);
 				sb.append(" = Java.use('");
