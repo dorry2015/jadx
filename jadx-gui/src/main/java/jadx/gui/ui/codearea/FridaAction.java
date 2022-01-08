@@ -77,9 +77,9 @@ public final class FridaAction extends JNodeMenuAction<JNode> {
 	}
 
 	private String formatClassName(MethodInfo methodInfo) {
-		//String className = methodInfo.getDeclClass().getType().getObject();
+		// String className = methodInfo.getDeclClass().getType().getObject();
 		String className = methodInfo.getDeclClass().getAliasShortName();
-		if(className.length() <= 3) {
+		if (className.length() <= 3) {
 			className = methodInfo.getDeclClass().getAliasFullName();
 		}
 		String classNameVar = className.replace("$", "_");
@@ -88,22 +88,18 @@ public final class FridaAction extends JNodeMenuAction<JNode> {
 		classNameVar += "_cls";
 		return classNameVar;
 	}
-	private String generateFunctionScope(MethodInfo methodInfo,boolean bhead) {
-		if(bhead) {
+
+	private String generateFunctionScope(MethodInfo methodInfo, boolean bhead) {
+		if (bhead) {
 			String className = methodInfo.getDeclClass().getAliasShortName();
 			return String.format("function hookJS_%s() {\n", className);
 		}
 		return "}\n";
 	}
+
 	private String generateClassDefinition(MethodInfo methodInfo, String classNameVar) {
 		String className = methodInfo.getDeclClass().getType().getObject();
-		StringBuffer sb = new StringBuffer();
-		sb.append("    var ");
-		sb.append(classNameVar);
-		sb.append(" = Java.use('");
-		sb.append(className);
-		sb.append("');\n");
-		return sb.toString();
+		return String.format("    let %s = Java.use('%s');\n", classNameVar, className);
 	}
 
 	private String generateMethod(MethodInfo methodInfo, String classNameVar) {
@@ -128,25 +124,16 @@ public final class FridaAction extends JNodeMenuAction<JNode> {
 			methodName = "$init";
 		}
 		StringBuffer sb = new StringBuffer();
-		sb.append("    ");
-		sb.append(classNameVar);
-		sb.append(".");
-		sb.append(methodName);
-		sb.append(".overload(");
-		sb.append(arguments);
-		sb.append(").implementation = function(");
-		sb.append(params);
-		sb.append(") {\n        let invokeId = INVOKEID++;\n    ");
+		;
+		sb.append(String.format("    %s.%s.overload(%s).implementation = function(%s){\n", classNameVar, methodName,
+				arguments, params));
+		sb.append("        let invokeId = INVOKEID++;\n        ");
 		if (methodInfo.isConstructor() == false && methodInfo.getReturnType().isVoid() == false) {
-			sb.append("    var ret = ");
+			sb.append("let ret = ");
 		}
-		sb.append("    this.");
-		sb.append(methodName);
-		sb.append("(");
-		sb.append(params);
-		sb.append(");\n        printMethod(invokeId, false, false, arguments, ret, '");
-		sb.append(methodInfo.toString());
-		sb.append("');\n");
+		sb.append(String.format("this.%s(%s);\n", methodName, params));
+		sb.append(String.format("        printMethod(invokeId, false, false, arguments, ret, '%s');\n",
+				methodInfo.toString()));
 		if (methodInfo.isConstructor() == false && methodInfo.getReturnType().isVoid() == false) {
 			sb.append("        return ret;\n");
 		}
@@ -190,7 +177,7 @@ public final class FridaAction extends JNodeMenuAction<JNode> {
 				}
 			}
 			if (canSet) {
-				String resultStr = functionScopeHead +classDefStr + methodStr+ functionScopeTail;
+				String resultStr = functionScopeHead + classDefStr + methodStr + functionScopeTail;
 				System.out.println(resultStr);
 				UiUtils.setClipboardString(resultStr);
 			}
