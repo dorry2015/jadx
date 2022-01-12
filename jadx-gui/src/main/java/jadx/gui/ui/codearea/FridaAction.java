@@ -132,8 +132,12 @@ public final class FridaAction extends JNodeMenuAction<JNode> {
 			sb.append("let ret = ");
 		}
 		sb.append(String.format("this.%s(%s);\n", methodName, params));
-		sb.append(String.format("        printMethod(invokeId, false, false, arguments, ret, '%s');\n",
-				methodInfo.toString()));
+		String hasRet = "ret";
+		if (methodInfo.getReturnType().isVoid() == true){
+			hasRet = "undefined";
+		}
+		sb.append(String.format("        printMethod(invokeId, false, false, arguments, %s, '%s');\n",
+		hasRet, methodInfo.toString()));
 		if (methodInfo.isConstructor() == false && methodInfo.getReturnType().isVoid() == false) {
 			sb.append("        return ret;\n");
 		}
