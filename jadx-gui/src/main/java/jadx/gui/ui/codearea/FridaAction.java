@@ -265,7 +265,7 @@ public final class FridaAction extends JNodeMenuAction<JNode> {
 				}				
 			}
 			if (canSet) {
-				String resultStr = functionScopeHead + classDefStr + methodStr + functionScopeTail + "\nJava.perform(function(){\n    " + callFunc + "});\n";
+				String resultStr = functionScopeHead + classDefStr + methodStr + functionScopeTail + "\nsetTimeout(function(){\n    Java.perform(function(){\n        " + callFunc + "    });\n}, 100);\n";
 				System.out.println(resultStr);
 				UiUtils.setClipboardString(resultStr);
 				writeFridajs(resultStr);
