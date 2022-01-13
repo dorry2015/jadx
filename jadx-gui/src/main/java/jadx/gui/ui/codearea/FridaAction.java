@@ -22,7 +22,6 @@ import jadx.core.dex.nodes.ClassNode;
 import jadx.core.dex.nodes.MethodNode;
 import jadx.gui.treemodel.JNode;
 import jadx.gui.utils.UiUtils;
-import jdk.internal.net.http.common.Log;
 import jadx.gui.treemodel.JClass;
 import jadx.gui.treemodel.JMethod;
 import static javax.swing.KeyStroke.getKeyStroke;
