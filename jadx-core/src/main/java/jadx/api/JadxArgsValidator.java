@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import jadx.core.utils.exceptions.JadxArgsValidateException;
 
 public class JadxArgsValidator {
+	public static String apkPath="";
 
 	private static final Logger LOG = LoggerFactory.getLogger(JadxArgsValidator.class);
 
@@ -77,6 +78,10 @@ public class JadxArgsValidator {
 			outDirName = name + '-' + JadxArgs.DEFAULT_OUT_DIR;
 		}
 		LOG.info("output directory: {}", outDirName);
+		if(apkPath.isEmpty()){
+			apkPath = file.getParent();
+		}
+		LOG.info("APK PATH: {}", apkPath);
 		outDir = new File(outDirName);
 		return outDir;
 	}
