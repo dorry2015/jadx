@@ -92,23 +92,25 @@ public final class CodeArea extends AbstractCodeArea {
 	private void addMenuItems() {
 		FindUsageAction findUsage = new FindUsageAction(this);
 		GoToDeclarationAction goToDeclaration = new GoToDeclarationAction(this);
-		FridaAction copyfrida = new FridaAction(this);
 		RenameAction rename = new RenameAction(this);
 		CommentAction comment = new CommentAction(this);
-
+		FridaAction frida = new FridaAction(this);
+		FridaFileAction buildFridaJs = new FridaFileAction(this);
 		JPopupMenu popup = getPopupMenu();
 		popup.addSeparator();
 		popup.add(findUsage);
 		popup.add(goToDeclaration);
 		popup.add(comment);
-		popup.add(copyfrida);
+		popup.add(frida);
+		popup.add(buildFridaJs);
 		popup.add(new CommentSearchAction(this));
 		popup.add(rename);
 		popup.addPopupMenuListener(findUsage);
 		popup.addPopupMenuListener(goToDeclaration);
-		popup.addPopupMenuListener(copyfrida);
 		popup.addPopupMenuListener(comment);
 		popup.addPopupMenuListener(rename);
+		popup.addPopupMenuListener(frida);
+		popup.addPopupMenuListener(buildFridaJs);
 
 		// move caret on mouse right button click
 		popup.addPopupMenuListener(new DefaultPopupMenuListener() {
